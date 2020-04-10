@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigment five</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="data.json"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <style>
+        .map {
+            height: 100px;
+            width: 50%;
+        }
+
+        button {
+            background-color: blue;
+        }
+
+        #ex1Slider .slider-selection {
+            background: #BABABA;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#slider").slider();
+        });
+    </script>
+    <style>
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: rgb(76, 86, 175);
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: rgb(43, 37, 134);
+            cursor: pointer;
+        }
+
+        .ui-slider-popup {
+            position: absolute !important;
+            width: 64px;
+            height: 64px;
+            text-align: center;
+            font-size: 36px;
+            padding-top: 14px;
+            z-index: 100;
+            opacity: 0.8;
+        }
+    </style>
+    <script src="https://demos.jquerymobile.com/1.4.2/js/jquery.mobile-1.4.2.min.js"></script>
+</head>
+
+<body style="background-color: rgb(0, 102, 255);">
+    <form name="form1" onsubmit="required()">
+        <div class="container">
+            <div class="jumbotron" style="background-color: cornflowerblue; height: 250px; margin-top: 20px;">
+                <div class="form-group row">
+                    <div class="col-9">
+
+                        <input list="names" id="hotelname" type="text" name="search" style="width: 800px;"
+                            placeholder="Search..">
+                        <datalist id="names"></datalist>
+                    </div>
+                    <div class="col-3"><input type="submit" name="submit" id="bt4" value="Search"
+                            style="background-color:blue;" /></div>
+
+                </div>
+                <hr>
+                <!-- -------------------------------------------------------------------------- -->
+                <div class="form-group row">
+                    <div class="col-3">
+                        <!-- <label for="check">Check-in:</label> -->
+                        <input list="checks" id="checkin" type="text" class="datepicker" name="selected_check_in"
+                            size="20" style="width:541px; height:23px;
+                        font-size:16px; text-indent:5px;" placeholder="Check-in" />
+
+                        <datalist id="checks"></datalist>
+                    </div>
+                    <div class="col-3">
+                        <!-- <label for="check_out">Check-out:</label> -->
+                        <input list="checks2" id="checkout" type="text" class="datepicker" name="selected_check_out"
+                            size="20" style="width:541px; height:23px;
+                        font-size:16px; text-indent:5px;" placeholder="Check-out" />
+                        <datalist id="checks2"></datalist>
+                    </div>
+
+
+                    <div class="col-3">
+                        <!-- <label for="room"></label>  -->
+                        <input list="rooms" id="room" name="selected_room" size="20" style="width:270px; height:23px;
+                        font-size:16px; text-indent:5px;" placeholder="Choose a room" />
+                        <datalist id="rooms"></datalist>
+                    </div>
+                    <div class="col-3">
+
+                    </div>
+                </div>
+                <hr>
+                <!-- --------------------------------------------------------------------------------------- -->
+                <div class="form-group row">
+                    <div class="col-3">
+                        <!-- <label for="slider">Price:</label>
+                        <div id="slider"></div>
+                        <datalist id="prices"></datalist> -->
+                        <input type="range" min="1000" max="2000" value="1000" class="slider" id="myRange"
+                            data-popup-enabled="true" data-show-value="true">
+                    </div>
+
+                    <div class="col-3">
+                        <label for="type">Property Type:</label>
+                        <input list="type" id="types" name="selected_type" size="20" style="width:100px; height:23px;
+                        font-size:16px; text-indent:5px;" placeholder="Type" />
+                        <datalist id="type"></datalist>
+                    </div>
+
+                    <div class="col-3">
+                        <label for="rate">Guest Rating:</label>
+                        <input list="rate" id="rates" name="selected_type" size="20" style="width:100px; height:23px;
+                        font-size:16px; text-indent:5px;" placeholder="Rating" />
+                        <datalist id="rate"></datalist>
+
+                    </div>
+                    <div class="col-3">
+                        <label for="loca">Hotel Location:</label>
+                        <input list="cities" id="city_input" name="selected_city" size="10" style="width:100px; height:23px;
+                        font-size:16px; text-indent:5px;" placeholder="Location" />
+                        <datalist id="cities"></datalist>
+
+                    </div>
+
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </form>
+    <!-- ------------------------------------------------------------------------------------------------------    <div class="container"> -->
+    <div class="container">
+        <div class="jumbotron" style="background-color: cornflowerblue; height: 10px;">
+            <div class="row">
+                <div class="col-6">
+                    <button id="bt">Show Map</button>
+                    <button id="bt2">Close Map</button>
+
+
+
+                </div>
+                <div class="col-6">
+                    Sort By:<input list="sortby" id="sort">
+                    <datalist id="sortby"></datalist>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div id="map" class="map">
+        </div>
+
+        <div id="hotel_container">
+
+        </div>
+
+    </div>
+
+    <script>
+        jQuery(init);
+        function init($) {
+            template100 = " ";
+                    function makestar(a) {
+                        for (j = 0; j <= a; j++) {
+                            template100 += `<i class="fas fa-star" id="star1" style="color:yellow;"></i>`;
+                        }
+                        return template100;
+                    }
+
+
+            //--- function pou elegxei na yparxei value sto search,if not, returns back a message 
+            function required() {
+                var empt = document.forms["form1"]["search"].value;
+                if (empt == "") {
+                    alert("After  refresh..Please input a Value in search bar!!");
+                    return false;
+                }
+                else {
+
+                    return true;
+                }
+            }
+            //---- edw kanw to ajax call -------
+            const URL = "data.json";
+
+            const options = {
+                url: URL,
+                success: handleRequest
+            };
+
+            $.ajax(options);
+            //-----------------------------------
+
+
+
+            //--- auto einai gia to input tou price sth form
+            $('myRange').popup();
+
+
+
+            function handleRequest(data /* parameters can have ANY name */) {
+
+
+
+                function removeDups(value, idx, arr) {
+                    return idx === arr.indexOf(value);
+                }
+
+
+
+
+
+                function giveBack(a) {
+
+                    let options6 = "";
+                    for (let i = 0; i < a.length; i++) {
+
+                        const option21 = "<option value='" + a[i] + "'></option>";
+
+                        options6 += option21;
+                    }
+                    return options6;
+                }
+
+
+
+                cityNames = data[1].entries.map(function (entry) { return entry.city; });
+                const doc = document.querySelector("#cities");
+
+                const g = giveBack(cityNames);
+                doc.innerHTML = g;
+
+
+
+                rooms = data[0].roomtypes.map(function (roomy) { return roomy.name; });
+                const doc1 = document.querySelector("#rooms");
+                const w = giveBack(rooms);
+                console.log(rooms);
+                doc1.innerHTML = w;
+
+
+
+                prices = data[1].entries.map(function (entry) { return entry.price; });
+
+                guestrates = [1, 2, 3, 4, 5];
+                const doc4 = document.querySelector("#type");//sto datalist prices ta stelnw
+                const b = giveBack(guestrates);
+
+                doc4.innerHTML = b;
+
+
+
+                rates = ["Okay", "Fair", "Good", "VeryGood", "Excellent"];
+                const doc5 = document.querySelector("#rate");
+                const c = giveBack(rates);
+                doc5.innerHTML = c;
+
+                hotelsNames = data[1].entries.map(function (entry) { return entry.hotelName; });
+
+                //global scope xwris to const
+                const doc6 = document.querySelector("#names");
+                const d = giveBack(hotelsNames);
+                doc6.innerHTML = d;
+
+
+                const sortBy = ["Car Park", "Sauna", "Pool", "Wifi", "Balcony"];
+                const doc7 = document.querySelector("#sortby");
+                const j = giveBack(sortBy);
+                doc7.innerHTML = j;
+
+
+                thumbnails = data[1].entries.map(function (entry) { return entry.thumbnail; });
+
+                hotelStar = data[1].entries.map(function (entry) { return entry.rating; });
+                console.log("stars " + hotelStar);
+
+                ratings = data[1].entries.map(function (entry) { return entry.ratings; });
+
+
+
+
+                noRate = ratings.map(function (entry) { return entry.no; });
+
+                textRate = ratings.map(function (entry) { return entry.text; });
+
+                //edw pairnw ta filtra gia to ka8e hotel
+                filtersList = data[1].entries.map(function (entry) { return entry.filters; });
+                //console.log(filtersList[0]); auto einai ena array pou prepei na to louparw
+                console.log(filtersList);
+
+
+
+
+
+
+                // mia lista pou 8a xreiastw gia to sortarisma 
+                filterListElement = filtersList[0];
+
+                //====================================================================================
+                //===edw pairnv ena standar template poy 8a fanei sthn arxh
+                doc9 = document.querySelector("#hotel_container");//without const gia na fainetai se global scope
+
+
+                const template = `<div class="container"><div class="row" >
+                    
+                    <div class="col-6" >
+                             <img style="width: 200px ; height : 200px; border-radius: 10%;   display: inline-block;  " 
+                                    src="${thumbnails[0]}"/></div>
+                                    
+                             <div class = "col-6 bg-primary text-white p-3 mt-2" style="border-radius: 10%;">
+                             <i class="fas fa-star" style="color:yellow"></i><i class="fas fa-star" style="color:yellow"></i><i class="fas fa-star" style="color:yellow"></i><i class="fas fa-star"style="color:yellow" ></i><i class="fas fa-star"></i>
+                             <hr>
+                              ${hotelsNames[0]} , Location : ${cityNames[0]}, ${textRate[0]} , ${noRate[0]} /10 , Price : ${prices[0]} Euros
+                             
+                             </div>
+                             
+                                
+                                
+                    </div></div>`;
+
+
+
+                doc9.innerHTML = template;
+                //====================================================================================    
+
+
+
+                let options5 = "";
+
+                const options6 = prices.filter(removeDups);
+
+                for (let i = 0; i < options6.length; i++) {
+
+                    const option = "<option value='" + options6[i] + "'></option>";
+
+                    options5 += option;
+                }
+
+                const doc3 = document.querySelector("#prices");//sto datalist prices ta stelnw
+                doc3.innerHTML = options5;
+
+
+                let options = ""; // Private variable of this function
+                //let options3 = "";
+
+                const options4 = cityNames.filter(removeDups);
+                for (let i = 0; i < options4.length; i++) {
+
+                    const option = "<option value='" + options4[i] + "'></option>";
+
+                    options += option;
+                }
+
+
+
+
+
+
+            }
+            //===========================================================================================
+            // edw einai h function gia ton map
+            function showMap() {
+
+
+
+
+                function geoSuccess(position) {
+
+                    console.log(position);
+
+                    var map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            })
+                        ],
+                        view: new ol.View({
+
+
+
+                            center: ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]),//.getCurrentPosition(geonavigator.geolocationSuccess, geoError),
+                            zoom: 4
+                        })
+                    });
+                }
+
+
+                function geoError(error) {
+                    console.log(error.message);
+                }
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+
+
+
+                    // document.getElementById(bt).disabled = 'true';
+                } else {
+
+                    // Geolocation API Not Supported
+
+                }
+
+                //===============================================================================
+
+
+            }
+
+            //===================================================
+            //==auto einai code gia to price input sth form
+            $('#ex1').slider({
+                formatter: function (value) {
+                    return 'Current value: ' + value;
+                }
+            });
+            const btn2 = document.querySelector('#bt');
+            btn2.addEventListener("click", showMap);
+            const btn3 = document.querySelector('#bt2');
+            btn3.addEventListener("click", function () { document.querySelector("#map").innerHTML = ""; });
+
+            //========================================
+            //== auto einai to function gia to hmerologio
+            $(function () {
+                $(".datepicker").datepicker();
+            });
+
+
+
+            // Listen on Form Submit event:
+            document.querySelector("form").addEventListener("submit", handleSubmit);
+
+            function handleSubmit(event) {
+                required();
+                $('#bt4').prop('disabled', true);
+                event.preventDefault();
+                // edw pairnv ta inputs apo th form kai ta vazw se metavlhtes gia xrhsh
+                const search = document.querySelector("#hotelname");
+                const checkin = document.querySelector("#checkin");
+                const checkout = document.querySelector("#checkout");
+                const room = document.querySelector("#room");
+
+                const price = document.querySelector("#myRange");
+
+
+                const propertyType = document.querySelector("#types");
+
+                const guestRating = document.querySelector("#rates");
+
+                const homeLocation = document.querySelector("#city_input");
+
+                const x = search.value;
+
+                const y = room.value;
+                let deikths = 0;
+                //== auta einai gia debugging
+                //console.log(x+" "+y+" "+propertyType.value+" "+guestRating.value+" "+homeLocation.value+" "+price.value);
+
+                //console.log(hotelsNames);
+
+                //=============================================================================
+                // edw vriskv ton deikth toy stoixeiou wste na parw kai ta alla properties tou
+                $.each(hotelsNames, function (index, value) {
+                    if (search.value === value) {
+                        deikths = index;
+                        console.log(index + ": " + value);
+                    
+                    // console.log(deikths);
+                    // console.log(thumbnails[deikths]);
+                    filterListElement.push(filtersList[deikths]);
+                    // console.log("list filter is " + filterListElement[0] + " " + filterListElement[1]);
+                    
+
+                    const result = makestar(hotelStar[deikths]);
+
+
+                    const template2 = `<div class="row">
+                        <div class="col-4">
+                        
+                             <img style="width: 200px ; height : 200px; border-radius: 10%;   display: inline-block;  " alt:"star five" 
+                                    src="${thumbnails[deikths]}"/>${result}</div>`;
+
+                    const template101 = ` <div class = "col-4 bg-primary text-white p-3 mt-2" style="border-radius: 10%; fluid:right;">
+                                      <p>ABOUT :</p>
+                                        <hr>
+                                        ${hotelsNames[deikths]} , location : ${cityNames[deikths]}, ${textRate[deikths]} , ${noRate[deikths]} / 10 ,Price : ${prices[deikths]} Euros 
+                                    
+                                    </div>
+                        
+                        </div>`;
+
+                    const templatemake = template2 + template101;
+                    // const templatemake2 = `<div class="container">${template2+template100+template101}</div>`;  
+
+                    $("#hotel_container").append(templatemake);
+                    }
+
+
+
+
+                });
+            }
+
+            //========================================================================= 
+            //pairnw to input tou sortby kai looparw thn filterlist
+            //gia na dv poia hotel exoyn to filtro pou psaxnei o client
+            $(document).ready(function () {
+                $("#sort").keyup(function () {
+
+
+                    //console.log(this.value);
+                    sortvalue = this.value;
+                    console.log(sortvalue);
+
+                    //edw pairnv tous deiktes twn hotels pou exoun auto to filtro
+                    var arrayIndexes = [];
+                    for (i = 0; i < filtersList.length; i++) {
+                        console.log("for loop")
+                        for (j = 0; j < filtersList[i].length; j++) {
+                            if (filtersList[i][j].name === sortvalue) {
+
+                                arrayIndexes.push(i);
+                                break;
+                            }
+
+                        }
+                    }
+                    $("#hotel_container").empty();
+                    console.log(arrayIndexes);
+
+                    for (i = 0; i < arrayIndexes.length; i++) {
+
+
+                        //console.log("this is for rate "+noRate[arrayIndexes[i]]);
+                        const template8 = `<div class="container"><div class="row">
+                        <div class="col-6">
+                             <img style="width: 200px ; height : 200px; border-radius: 10%;   display: inline-block;  " 
+                                    src="${thumbnails[arrayIndexes[i]]}"/>${makestar(hotelStar[arrayIndexes[i]])}</div>
+                                    <div class = "col-6 bg-primary text-white p-3 mt-2" style="border-radius: 10%;">
+                                        <div class = "col-6 bg-primary text-white p-3 mt-2">
+                                        <i class="fas fa-star" id="star6"></i><i class="fas fa-star" id="star7"></i><i class="fas fa-star" id="star8"></i><i class="fas fa-star" id="star9"></i><i class="fas fa-star" id="star10"></i>
+                                        ${hotelsNames[arrayIndexes[i]]} , location : ${cityNames[arrayIndexes[i]]}, ${textRate[arrayIndexes[i]]} , ${noRate[arrayIndexes[i]]} / 10 ,Price : ${prices[arrayIndexes[i]]} Euros 
+                                    
+                                    </div>
+                       </div></div><hr>`;
+
+
+                        $("#hotel_container").append(template8);
+
+                    }
+                    
+
+                });
+
+
+                // searchButton = document.querySelector("#bt4");
+                // addEventListener("click",function(){
+
+                // });
+
+
+            });
+
+        }
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
